@@ -30,8 +30,8 @@
 1. **Clone the repository:**
 2. **Create a token from github:**
 3. **set token on application.properties**
-4. **build app with mvn clean package **
-5. **docker-compose up **
-6. **go to http://localhost:8080/swagger-ui/index.html **
-7. **use  Post to create repositories **
-8. ** after 5 minutes you can check list of repositories and their status**
+4. **build app with mvn clean package**
+5. **docker-compose up**
+6. **go to http://localhost:8080/swagger-ui/index.html**
+7. **use  Post to create repositories**
+8. **after 5 minutes you can check list of repositories and their status**
