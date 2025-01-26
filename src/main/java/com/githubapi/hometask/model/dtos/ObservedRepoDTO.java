@@ -1,11 +1,6 @@
 package com.githubapi.hometask.model.dtos;
 
 import java.time.LocalDateTime;
-import java.util.UUID;
-
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.githubapi.hometask.model.entities.ObservedRepo;
-import com.githubapi.hometask.model.enums.ObservedRepoStatus;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -20,14 +15,14 @@ import lombok.NoArgsConstructor;
 public class ObservedRepoDTO {
 
   private Long id;
-  private UUID uuid;
+  private String uuid;
   private String url;
   private String owner;
   private String name;
   private int stars;
   private int openIssues;
   private String license;
-  private ObservedRepoStatus status;
+  private String status;
   private LocalDateTime createdAt;
   private LocalDateTime updatedAt;
 

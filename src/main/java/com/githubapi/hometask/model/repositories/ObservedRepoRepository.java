@@ -10,7 +10,6 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-
 import com.githubapi.hometask.model.entities.ObservedRepo;
 import com.githubapi.hometask.model.enums.ObservedRepoStatus;
 import com.githubapi.hometask.model.queryresults.ObservedRepoQueryResult;
@@ -23,29 +22,24 @@ public interface ObservedRepoRepository extends JpaRepository<ObservedRepo, Long
   // @formatter:off
   @Query(
       value =
-          "SELECT or.* " +
-              "FROM observed_repo or " +
+          "SELECT id ,BIN_TO_UUID(uuid) uuid,url,license,name ,owner ,open_issues openIssues,stars,updated_at updatedAt,created_at createdAt " +
+              "FROM observed_repo " +
               "WHERE " +
-              "(:status IS NULL OR d.status = CAST(:status AS varchar)) " +
-              "AND (:owner IS NULL OR :owner = '' OR LOWER(d.owner) LIKE LOWER(CONCAT('%', :owner, '%'))) " +
-              "AND (:name IS NULL OR :name = '' OR LOWER(d.name) LIKE LOWER(CONCAT('%', :name, '%'))) " +
-              "AND (:license IS NULL OR :license = '' OR LOWER(d.license) LIKE LOWER(CONCAT('%', :license, '%')))",
+              "(:status IS NULL OR  status = :status) " +
+              "AND (:owner IS NULL OR :owner = '' OR LOWER(owner) LIKE LOWER(CONCAT('%', :owner, '%'))) " +
+              "AND (:name IS NULL OR :name = '' OR LOWER(name) LIKE LOWER(CONCAT('%', :name, '%'))) " +
+              "AND (:license IS NULL OR :license = '' OR LOWER(license) LIKE LOWER(CONCAT('%', :license, '%')))",
       countQuery =
           "SELECT COUNT(*) " +
-              "FROM observed_repo d " +
+              "FROM observed_repo " +
               "WHERE " +
-              "(:status IS NULL OR d.status = CAST(:status AS varchar)) " +
-              "AND (:owner IS NULL OR :owner = '' OR LOWER(d.owner) LIKE LOWER(CONCAT('%', :owner, '%'))) " +
-              "AND (:name IS NULL OR :name = '' OR LOWER(d.name) LIKE LOWER(CONCAT('%', :name, '%'))) " +
-              "AND (:license IS NULL OR :license = '' OR LOWER(d.license) LIKE LOWER(CONCAT('%', :license, '%')))",
+              "(:status IS NULL OR status = :status) " +
+              "AND (:owner IS NULL OR :owner = '' OR LOWER(owner) LIKE LOWER(CONCAT('%', :owner, '%'))) " +
+              "AND (:name IS NULL OR :name = '' OR LOWER(name) LIKE LOWER(CONCAT('%', :name, '%'))) " +
+              "AND (:license IS NULL OR :license = '' OR LOWER(license) LIKE LOWER(CONCAT('%', :license, '%')))",
       nativeQuery = true
   )
-  Page<ObservedRepoQueryResult> findAllByFilters(
-      @Param("owner") String owner,
-      @Param("name") String name,
-      @Param("status") ObservedRepoStatus status,
-      @Param("license") String license,
-      Pageable pageable
+  Page<ObservedRepoQueryResult> findAllByFilters( String owner,String name, String status,String license, Pageable pageable
   );
 
 
@@ -53,13 +47,13 @@ public interface ObservedRepoRepository extends JpaRepository<ObservedRepo, Long
   @Query(
       value =
           """
-              SELECT or.*  
-              FROM observed_repo or 
-              WHERE  (:status IS NULL OR d.status = CAST(:status AS varchar))""",
+              SELECT owner,name 
+              FROM observed_repo  
+              WHERE  (:status IS NULL OR  status = CAST(:status AS varchar))""",
       countQuery =
           """ 
               SELECT COUNT(*) 
-              FROM observed_repo d 
+              FROM observed_repo  
               WHERE (:status IS NULL OR d.status = CAST(:status AS varchar)) """ ,
       nativeQuery = true
   )

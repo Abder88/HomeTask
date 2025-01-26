@@ -1,9 +1,6 @@
 package com.githubapi.hometask.exceptions;
 
 
-import java.util.Arrays;
-import java.util.Objects;
-
 import org.springframework.http.HttpStatus;
 import org.springframework.lang.NonNull;
 import org.springframework.web.bind.annotation.ResponseStatus;

@@ -65,7 +65,7 @@
 		<appender-ref ref="STDOUT"/>
 		<appender-ref ref="FILE"/>
 	</logger>
-	<logger additivity="false" level="INFO"
+	<logger additivity="INFO" level="INFO"
 		name="org.hibernate.event.internal.DefaultPersistEventListener">
 		<appender-ref ref="STDOUT"/>
 	</logger>

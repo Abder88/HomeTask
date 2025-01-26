@@ -11,15 +11,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import com.githubapi.hometask.model.entities.ObservedRepo;
 import com.githubapi.hometask.model.enums.ObservedRepoStatus;
-import com.githubapi.hometask.model.queryresults.ObservedRepoQueryResult;
-import com.githubapi.hometask.services.ObservedRepoQueryService;
 import com.githubapi.hometask.services.ObservedRepoService;
 
 import jakarta.annotation.PostConstruct;
@@ -54,7 +51,7 @@ public class GHRepositoryCrawler {
     }
   }
 
-  @Scheduled(fixedRate = 300000)
+  @Scheduled(fixedRate = 5 * 60 * 1000)
   public void fetchRepositories() {
     if (github == null) {
       log.error("GitHub client is not initialized. Skipping scheduled repository crawl.");
@@ -62,14 +59,13 @@ public class GHRepositoryCrawler {
     }
 
     int pageIndex = 0;
+    int totalElement = 0;
     int pageSize = 10;
     boolean hasNextPage = true;
 
     while (hasNextPage) {
-      Page<ObservedRepo> page = observedRepoService.searchRepos(
-          "", "", ObservedRepoStatus.ACTIVE, "",
-          PageRequest.of(pageIndex, pageSize, Sort.by("createdAt").descending())
-      );
+      Page<ObservedRepo> page = observedRepoService.searchRepos("", "", ObservedRepoStatus.ACTIVE,
+          "", PageRequest.of(pageIndex, pageSize, Sort.by("createdAt").descending()));
 
       if (page.isEmpty()) {
         log.info("No more ObservedRepo entries found. Stopping crawl at page index: {}", pageIndex);
@@ -89,14 +85,12 @@ public class GHRepositoryCrawler {
 
           observedReposToUpdate.add(observedRepo);
 
-          log.debug("[REPO CRAWLER] Fetched: {} | Open Issues: {} | Stars: {}",
-              repo.getFullName(),
-              repo.getOpenIssueCount(),
-              repo.getStargazersCount());
+          log.debug("[REPO CRAWLER] Fetched: {} | Open Issues: {} | Stars: {}", repo.getFullName(),
+              repo.getOpenIssueCount(), repo.getStargazersCount());
 
         } catch (Exception e) {
-          log.error("Error fetching repository details for '{}': {}",
-              observedRepo.getName(), e.getMessage());
+          log.error("Error fetching repository details for '{}': {}", observedRepo.getName(),
+              e.getMessage());
           observedRepo.setStatus(ObservedRepoStatus.INVALID);
           observedReposToUpdate.add(observedRepo);
         }
@@ -105,11 +99,13 @@ public class GHRepositoryCrawler {
       // Save updated data in a single batch
       if (!observedReposToUpdate.isEmpty()) {
         observedRepoService.saveAll(observedReposToUpdate);
-        log.debug("[REPO CRAWLER] Successfully updated {} repositories in this batch.", observedReposToUpdate.size());
+        log.debug("[REPO CRAWLER] Successfully updated {} repositories in this batch.",
+            observedReposToUpdate.size());
       }
-
+      totalElement += observedReposToUpdate.size();
       hasNextPage = page.hasNext();
       pageIndex++;
     }
+    log.info("[REPO CRAWLER] Successfully updated {} repositories ", totalElement);
   }
 }

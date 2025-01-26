@@ -1,11 +1,5 @@
 package com.githubapi.hometask.exceptions;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-
-
 public enum GlobalError {
   RESOURCE_NOT_FOUND("error.not_found", "Resource not found");
 

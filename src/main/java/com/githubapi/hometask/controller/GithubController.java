@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.githubapi.hometask.component.TokenHandler;
 import com.githubapi.hometask.model.dtos.ObservedRepoCreateRequestDTO;
 import com.githubapi.hometask.model.dtos.ObservedRepoDTO;
 import com.githubapi.hometask.model.dtos.PageDTO;
@@ -38,6 +39,7 @@ import lombok.RequiredArgsConstructor;
 public class GithubController {
 
   private final ObservedRepoService service;
+  private final TokenHandler tokenHandler;
 
   @GetMapping("/up")
   @Operation(summary = "Check the API status", description = "Returns an OK status to indicate the API is up and running.")
@@ -45,7 +47,7 @@ public class GithubController {
       @ApiResponse(responseCode = "200", description = "API is up and running")
   })
   public ResponseEntity up() {
-return ResponseEntity.status(HttpStatus.OK).body(null);
+    return ResponseEntity.status(HttpStatus.OK).body(null);
   }
 
   @PostMapping
@@ -91,8 +93,14 @@ return ResponseEntity.status(HttpStatus.OK).body(null);
       @RequestParam(required = false, defaultValue = "") String name,
       @RequestParam(required = false, defaultValue = "ACTIVE") ObservedRepoStatus status,
       @RequestParam(required = false, defaultValue = "") String license,
-      @RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size) {
-    Pageable pageable = PageRequest.of(page, size, Sort.by("createdAt").descending());
+      @RequestParam(required = false, defaultValue = "") String nextPage
+  )
+      throws Exception {
+    int page = 0;
+    if (!nextPage.isBlank()) {
+      page = Integer.valueOf(tokenHandler.decryptToken(nextPage));
+    }
+    Pageable pageable = PageRequest.of(page, 2, Sort.by("createdAt").descending());
     return service.searchObservedRepo(owner, name, status, license, pageable);
   }
 

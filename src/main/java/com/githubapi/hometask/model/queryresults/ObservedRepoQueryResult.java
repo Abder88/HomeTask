@@ -1,22 +1,20 @@
 package com.githubapi.hometask.model.queryresults;
 
 import java.time.LocalDateTime;
-import java.util.UUID;
 
 import com.githubapi.hometask.model.dtos.ObservedRepoDTO;
-import com.githubapi.hometask.model.enums.ObservedRepoStatus;
 
 public interface ObservedRepoQueryResult {
   
     Long getId();
-   UUID getUuid();
+   String getUuid();
    String getUrl();
    String getOwner();
    String getName();
    Integer getStars();
   Integer getOpenIssues();
    String getLicense();
-   ObservedRepoStatus getStatus();
+   String getStatus();
    LocalDateTime getCreatedAt();
    LocalDateTime getUpdatedAt();
 
@@ -25,6 +23,7 @@ public interface ObservedRepoQueryResult {
         .id(getId())
         .uuid(getUuid())
         .url(getUrl())
+        .name(getName())
         .owner(getOwner())
         .stars(getStars())
         .openIssues(getOpenIssues())

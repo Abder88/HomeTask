@@ -43,8 +43,10 @@ public class ObservedRepo extends AuditingEntity {
   @Column(nullable = false, length = 1000)
   private String name;
 
-  private int stars;
-  private int openIssues;
+  @Column(nullable = false)
+  private int stars = 0;
+  @Column(nullable = false)
+  private int openIssues=0;
 
   @Column(length = 100)
   private String license;

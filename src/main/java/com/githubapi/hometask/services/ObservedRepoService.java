@@ -57,7 +57,7 @@ public class ObservedRepoService {
   }
 
   public PageDTO<ObservedRepoDTO> searchObservedRepo(String owner, String name,
-      ObservedRepoStatus status, String license, Pageable pageable) {
+      ObservedRepoStatus status, String license, Pageable pageable) throws Exception {
     return queryService.searchObservedRepo(owner, name, status, license, pageable);
   }
 

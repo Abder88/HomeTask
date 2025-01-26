@@ -29,9 +29,11 @@
 
 1. **Clone the repository:**
 2. **Create a token from github:**
-3. **set token on application.properties**
-4. **build app with mvn clean package**
-5. **docker-compose up**
-6. **go to http://localhost:8080/swagger-ui/index.html**
-7. **use  Post to create repositories**
-8. **after 5 minutes you can check list of repositories and their status**
+3. **Set token on application.properties**
+4. **Build app with mvn clean package (tests will run using MySQL Testcontainers)**
+5. **Run docker-compose up**
+6. **Go to swagger http://localhost:8080/swagger-ui/index.html**
+7. **Enjoy creating references to your repositories (or fake ones) and checking their status**
+
+## Personal Comments 
+It was amazing to work on this task over the weekend. I spent around 4–5 hours fine-tuning the initial solution to match the requirements. I'm not usually a test person (I often delegate such tasks), but I learned a lot of new things. Thank you for taking the time to review my work.
