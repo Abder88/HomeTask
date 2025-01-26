@@ -31,7 +31,7 @@
 2. **Create a token from github:**
 3. **Set token on application.properties**
 4. **Build app with mvn clean package (tests will run using MySQL Testcontainers)**
-5. **Run docker-compose up**
+5. **Run docker-compose up --build**
 6. **Go to swagger http://localhost:8080/swagger-ui/index.html**
 7. **Enjoy creating references to your repositories (or fake ones) and checking their status**
 
