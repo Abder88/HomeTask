@@ -1,3 +1,22 @@
+## Applied Best Practices
+### 1. **Command Query Responsibility Segregation (CQRS)**
+Command Query Responsibility Segregation (CQRS) is a pattern that separates the write (command) and read (query) models of an application, allowing for optimized processing paths for each. This separation can improve scalability, performance, and maintainability, especially in event-driven and microservices architectures.
+ID Strategy: Combining UUID and INT
+For a balanced approach, combine both UUID for external references and INT for internal use.
+Use UUID when you need global uniqueness, security, or a distributed architecture.
+Use INT (AUTO_INCREMENT) for better performance and simplicity in small-scale applications.
+### 2. **Delegating Date Management to JPA**
+Use @MappedSuperclass to delegate date management to JPA, allowing automatic timestamping:
+### 3. **Query Optimization**
+Use a QueryResult object to fetch only the necessary metadata instead of retrieving full entity attributes, reducing memory usage and transaction overhead.
+Avoid holding an entity for the entire transaction unless necessary.
+### 4. **Global Exception Handling**
+Implement a global exception handler to personalize error messages and catch exceptions gracefully.
+### 5. **REST API Best Practices**
+Never expose entities in REST APIs—always use DTOs and map them using a tool like ModelMapper.
+Optimize database interactions:
+Avoid fetching entire entities if not needed—use references where possible.
+Disable Open Session in View (spring.jpa.open-in-view=false) to prevent unnecessary persistence context retention.
 ## Components
 
 ### 1. **GitHub REST API**
